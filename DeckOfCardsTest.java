@@ -3,7 +3,7 @@ public class DeckOfCardsTest
    // Executa o aplicativo
    public static void main(String args[])
    {
-      DeckOfCards myDeckOfCards = new DeckOfCards();
+      DeckOfCards myDeckOfCards = new SuecaDeckOfCards();
       //myDeckOfCards.shuffle(); // Coloca as cartas em ordem aleatória
 
       // Imprime todas as 52 cartas na ordem em que elas são distribuídas
@@ -24,6 +24,9 @@ public class DeckOfCardsTest
          //    myDeckOfCards.dealCard(), myDeckOfCards.dealCard());
       } // for final
       System.out.println("Size: " + myDeckOfCards.size());
+
+      SuecaDeckOfCards suecaDeckOfCards = new SuecaDeckOfCards();
+      suecaDeckOfCards.clone();
       
    } 
    // Fim do método main

@@ -1,4 +1,4 @@
-public class Card 
+public class Card implements Prototype 
 {
    private String face; // face da carta ("Ace", "Deuce", ...)
    private String suit; // naipe da carta ("Hearts", "Diamonds", ...)
@@ -10,6 +10,16 @@ public class Card
       face = cardFace; // inicializa face da carta
       suit = cardSuit; // inicializa naipe da carta
       value = cardValue; // inicializa valor da carta
+   }
+
+   public Card(Card card) {
+      this.face = card.face;
+      this.suit = card.suit;
+      this.value = card.value;
+   }
+
+   public Prototype clone() {
+      return new Card(this);
    }
 
    // Retorna uma representação em String da carta

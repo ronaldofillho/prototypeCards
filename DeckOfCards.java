@@ -1,74 +1,85 @@
+// classe DeckOfCards representa um baralho.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DeckOfCards {
-    private List<Card> deck; // ArrayList usado como uma pilha de objetos
-    private final int NUMBER_OF_CARDS = 52; // número constante de cartas
-    private Random randomNumbers; // gerador de números aleatórios
+public abstract class DeckOfCards{
+   protected List<Card> deck; // ArrayList usado como uma pilha de objetos
+   protected int number_of_cards = 52; // n�mero constante de Cards
+   protected Random randomNumbers; // gerador de n�mero aleat�rio
+   
 
-    // Construtor que preenche o baralho de cartas
-    public DeckOfCards() {
-        String faces[] = { "Ace", "Deuce", "Three", "Four", "Five", "Six",
-            "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
-        String suits[] = { "Hearts", "Diamonds", "Clubs", "Spades" };
+   // construtor preenche baralho de cartas
+   public DeckOfCards() {
+      String faces[] = { "Ace", "Deuce", "Three", "Four", "Five", "Six",
+         "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };    
+      String suits[] = { "Hearts", "Diamonds", "Clubs", "Spades" };     
 
-        deck = new ArrayList<Card>(); // cria List de objetos Card
-        randomNumbers = new Random(); // cria gerador de números aleatórios
+      deck = new ArrayList<Card>(); // cria List de objetos Card
+      randomNumbers = new Random(); // cria gerador de n�mero aleat�rio
 
-        // Preenche o baralho com objetos Card
-        for (int count = 0; count < NUMBER_OF_CARDS; count++) {
-            deck.add(new Card(faces[count % 13], suits[count / 13], (count % 13) + 1));
-        }
-    } // fim do construtor DeckOfCards
+      // preenche baralho com objetos Card
+      for ( int count = 0; count < number_of_cards; count++ ) {
+        deck.add(new Card( faces[ count % 13 ], suits[ count / 13 ], (count % 13)+1 ));
 
-    // Verifica se ainda há cartas no baralho
-    public boolean hasCard() {
-        return !deck.isEmpty();
     }
+    editDeck();
 
-    // Embaralha as cartas com um algoritmo de uma passagem
-    public void shuffle() {
-        // Para cada carta, seleciona outra carta aleatória e as compara
-        for (int first = 0; first < deck.size(); first++) {
-            // Seleciona um número aleatório entre 0 e 51
-            int second = randomNumbers.nextInt(NUMBER_OF_CARDS);
+    editDeckValues();
+   
 
-            // Compara a carta atual com a carta aleatoriamente selecionada
-            Card temp = deck.get(first);
-            deck.set(first, deck.get(second));
-            deck.set(second, temp);
-        }
-    } // fim do método shuffle
+   } // fim do construtor DeckOfCards
 
-    // Distribui uma carta do topo do monte
-    public Card dealCard() {
-        if (hasCard()) {
-            return deck.remove(deck.size() - 1); // Retorna a carta do topo do monte
-        } else {
-            return null; // Não há mais cartas no baralho
-        }
-    }
+   public DeckOfCards(DeckOfCards deckOfCards) {
+      this.deck = new ArrayList<Card>();
+      for (Card card: deckOfCards.deck) {
+         this.deck.add((Card) card.clone());
+      }
+      this.number_of_cards = deckOfCards.number_of_cards;
+      this.randomNumbers = deckOfCards.randomNumbers;
+   }
 
-    // Retorna o número de cartas restantes no baralho
-    public int size() {
-        return deck.size();
-    }
+   public abstract void editDeck();
 
-    // Converte o baralho em uma representação de string
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Card card : deck) {
-            sb.append(card.toString()).append("\n");
-        }
-        return sb.toString();
-    }
+   public abstract void editDeckValues();
 
-    // Método protegido para obter o deck (lista de cartas)
-    protected List<Card> getDeck() {
-        return deck;
-    }
+   public boolean hasCard() {
+	   return deck.size() > 0;
+   }
+   // embaralha as cartas com um algoritmo de uma passagem
+   public void shuffle() {
+      // depois de embaralhar, a distribui��o deve iniciar em deck[ 0 ] novamente
 
-    
-}
+
+      // para cada Card, seleciona outro Card aleat�rio e os compara
+      for ( int first = 0; first < deck.size(); first++ ) {
+         // seleciona um n�mero aleat�rio entre 0 e 51
+         int second =  randomNumbers.nextInt( number_of_cards );
+
+         // compara Card atual com Card aleatoriamente selecionado
+         Card temp = deck.remove( second );     
+         deck.add(0, temp);
+      } // for final
+   } // fim do m�todo shuffle
+
+   // distribui um Card, do topo do monte
+   public Card dealCard() {
+       return deck.remove(deck.size()-1); // retorna Card atual no array
+   } // fim do m�todo dealCard
+   
+   
+   public int size() {
+	   return deck.size();
+   }
+   
+   public String toString() {
+	  String s = "";
+	  for (Card card : deck) {
+		  s += card.toString() + "\n";	
+	  }
+      return s;
+   }
+
+} // fim da classe DeckOfCards
+
+
